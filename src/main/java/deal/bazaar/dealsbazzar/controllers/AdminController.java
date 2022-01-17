@@ -1,30 +1,34 @@
-/* package deal.bazaar.dealsbazzar.controllers;
+package deal.bazaar.dealsbazzar.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import deal.bazaar.dealsbazzar.models.Admin;
 import deal.bazaar.dealsbazzar.models.Category;
 import deal.bazaar.dealsbazzar.models.ResponseData;
+import deal.bazaar.dealsbazzar.services.AdminService;
 import deal.bazaar.dealsbazzar.services.CategoryService;
 
 @RestController
-@RequestMapping
+@RequestMapping("/admin")
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:3000" })
 public class AdminController {
-   
     @Autowired
-    private CategoryService categoryService;
+    private AdminService adminService;
 
-    @PostMapping("/save")
-    public ResponseData saveCategory(@RequestBody Category category)
-    {
-        Category newCategory = categoryService.saveCategory(category);
-        if(newCategory==null)
-			return new ResponseData(400, null, "data not added");
-        else
-			return new ResponseData(200, newCategory, "success");
+    @PostMapping("/add")
+    public Admin addAdmin(@RequestBody Admin admin){
+        return adminService.addAdminUser(admin);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody Admin admin){
+        return  adminService.validateAdminUser(admin.getUserName(), admin.getPassword())
+                ?"Login successfully.."
+                :"bad credential please retry again !";
     }
 }
- */
